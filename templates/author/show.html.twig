@@ -1,0 +1,24 @@
+{{nom|upper }}
+{# Ceci un commentaire #}
+{% set A=4 %}
+{{ A }}
+{% if 'Fabien' starts with 'F' %}
+  Commence par F
+{% endif %}
+
+{% if 'Fabien' ends with 'n' %}
+  Finit par n
+{% endif %}
+
+{#Exemples des filtres #}
+{{'&hello3A24'|lower|trim('&')}}
+
+<a href="{{path('afficher')}}">
+    Lien1
+
+</a> 
+<a href="{{url('afficher')}}">
+    Lien 2
+</a>
+
+<img src="{{asset('assets/images/image.png')}}">
