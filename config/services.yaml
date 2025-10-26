@@ -19,9 +19,7 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-    App\Service\SendMail:
-        arguments:
-            $adminEmail: 'asma.ayari@esprit.tn'
+   
     App\Service\AuthorMailerService:
         arguments:
             $fromEmail: '%env(MAILER_FROM)%'
