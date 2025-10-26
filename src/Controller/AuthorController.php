@@ -5,7 +5,9 @@ namespace App\Controller;
 
 use App\Entity\Author;
 use App\Form\AuthorType;
+use App\Form\SearchType;
 use App\Repository\AuthorRepository;
+use App\Service\HappyQuote;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -47,10 +49,15 @@ final class AuthorController extends AbstractController
     }
 
     #[Route('/ShowAllAuthor',name:'ShowAllAuthor')]
-    public function ShowAllAuthor(AuthorRepository $repo){
-     $authors=$repo->findAll();
+    public function ShowAllAuthor(AuthorRepository $repo,
+    HappyQuote $quote){
+    //new//
+        $bestQuotes= $quote->getHappyMessage();
+    ///////
+    $authors=$repo->findAll();
      return $this->render('author/listAuthor.html.twig'
-     ,['list'=>$authors]);
+     ,['list'=>$authors,'theBest'=>$bestQuotes
+]);
     }
 
     #[Route('/add', name:'add')]
@@ -99,4 +106,30 @@ final class AuthorController extends AbstractController
        $author=$repo->find($id);
        return $this->render('author/ShowDetailsAuthor.html.twig',['author'=>$author]);
     }
+
+    #[Route('/ShowAllQB', name:'ShowAllQB')]
+    public function ShowAllQB(AuthorRepository $repo){
+     
+     $authors=$repo->findAllAuthorsQB();
+     $form=$this->createForm(SearchType::class);
+     return $this->render('author/listAuthor.html.twig'
+     ,['list'=>$authors,'form'=>$form->createForm()]);
+    }
+
+    #[Route('/ShowAllAuthorsByEmail',name:'ShowAllAuthorsByEmail')]
+    public function ShowAllAuthorsByEmail(AuthorRepository $repo){
+     $authors=$repo->listAuthorByEmail();
+     return $this->render('author/listAuthor.html.twig'
+     ,['list'=>$authors]);
+
+    }
+
+    #[Route('/ShowAllAuthorsDQL',name:'ShowAllAuthorsDQL')]
+    public function ShowAllAuthorsDQL(AuthorRepository $repo){
+      $authors=$repo->ShowAllAuthorsDQL();
+       return $this->render('author/listAuthor.html.twig'
+     ,['list'=>$authors]);
+    }
+
+
 }
